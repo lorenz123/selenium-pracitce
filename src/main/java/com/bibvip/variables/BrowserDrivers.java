@@ -1,8 +1,5 @@
 package com.bibvip.variables;
 
-import com.bibvip.consts.ElementType;
-import org.openqa.selenium.By;
-
 public interface BrowserDrivers {
     String CHROME_DRIVER = "webdriver.chrome.driver";
     String FIREFOX_DRIVER = "webdriver.gecko.driver";
