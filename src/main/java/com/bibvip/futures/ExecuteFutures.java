@@ -13,7 +13,7 @@ public class ExecuteFutures {
         WebDriver driverChrome = getChromeConfig();
         JavascriptExecutor j = (JavascriptExecutor) driverChrome;
 
-        //activate - login auto
+        //activate - futures auto
         doFuturesAuto(driverChrome, j);
 
         //Done (Close browsers)

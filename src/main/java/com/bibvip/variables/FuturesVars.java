@@ -15,10 +15,19 @@ public interface FuturesVars {
     String ONE_WEEK_TF = ".time-line:nth-child(9) > .b-1-cl";
     String ONE_MONTH_TF = ".time-line:nth-child(10) > .b-1-cl";
     String FULL_SCREEN_GRAPH = ".full-btn > .b-1-cl";
-    String ACTIVE_TF_GRAPH = ".pane-legend-line__wrap-description"; //TODO skip for now (figure this out once everything is done
+
+    String ACTIVE_TF_GRAPH = ".pane-legend-title__interval";
     String CHART_STYLES_BUTTON = ".menu-16FRUKka- button-13wlLwhJ- apply-common-tooltip";
     String INDICATORS_BUTTON = "#header-toolbar-indicators";
     String PROPERTIES_BUTTON = "header-toolbar-properties";
 
+    String OPEN_PRICE = ".pane-legend-item-value-container:nth-child(4) > .pane-legend-item-value-wrap:nth-child(1)";
+    String HIGH_PRICE = ".pane-legend-item-value-container:nth-child(4) > .pane-legend-item-value-wrap:nth-child(2)";
+    String LOW_PRICE = ".pane-legend-item-value-wrap:nth-child(3)";
+    String CLOSE_PRICE = ".pane-legend-item-value-wrap:nth-child(4)";
+    String CHANGE_PRICE = ".pane-legend-item-value-wrap:nth-child(6)";
+    String MA5_PRICE = ".pane-legend-line:nth-child(2) .pane-legend-item-value-wrap";
+    String MA10_PRICE = ".pane-legend-line:nth-child(3) .pane-legend-item-value-wrap";
+    String MA30_PRICE = ".pane-legend-line:nth-child(4) .pane-legend-item-value-wrap";
 
 }

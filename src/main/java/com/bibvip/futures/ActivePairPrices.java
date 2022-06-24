@@ -3,11 +3,15 @@ package com.bibvip.futures;
 
 import com.bibvip.consts.ElementType;
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.Arrays;
 
+import static com.bibvip.consts.ElementType.ID;
+import static com.bibvip.consts.ElementType.TAG_NAME;
 import static com.bibvip.utility.AppUtil.getBy;
 import static com.bibvip.variables.FuturesVars.ACTIVE_PAIR_LASTPRICE_CHANGE;
 import static com.bibvip.variables.FuturesVars.SYMBOLS_BLOCK;

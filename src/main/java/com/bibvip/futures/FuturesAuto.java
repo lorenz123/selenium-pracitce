@@ -20,7 +20,7 @@ public class FuturesAuto {
         MarketBlock.checkMarketBlockDismiss(driverChrome, j); //item 2 - dismissed market block
         Timeframes.visitAllTimeframes(driverChrome, j); //item 5
 
-        //item 6 - TODO cannot select element using selenium and javascript
+        
 
     }
 
