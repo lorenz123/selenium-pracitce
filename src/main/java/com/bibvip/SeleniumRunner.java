@@ -1,7 +1,6 @@
 package com.bibvip;
 
 import static com.bibvip.futures.ExecuteFutures.performFutures;
-import static com.bibvip.login.ExecuteLogin.performLogin;
 
 public class SeleniumRunner {
 

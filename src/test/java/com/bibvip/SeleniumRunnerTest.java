@@ -1,15 +1,8 @@
 package com.bibvip;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.suite.api.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class SeleniumRunnerTest {
 
-class SeleniumRunnerTest {
-
-    @Test
-    void main() {
-
-    }
 
 }

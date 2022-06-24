@@ -3,9 +3,6 @@ package com.bibvip.futures;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
-import static com.bibvip.futures.LeftPanePrices.checkPrices;
-import static com.bibvip.futures.MarketBlock.checkMarketBlockDisplay;
-import static com.bibvip.futures.Timeframes.visitAllTimeframes;
 import static com.bibvip.jumpers.Jumper.jumpToFutures;
 
 
@@ -16,9 +13,12 @@ public class FuturesAuto {
 
         jumpToFutures(driverChrome); //reusable jumper to Futures page
 
-        checkPrices(driverChrome); //item 1,3,4
-        checkMarketBlockDisplay(driverChrome, j); //item 2
-        visitAllTimeframes(driverChrome, j); //item 5
+        ActivePairPrices.checkActivePairPrices(driverChrome); //item 1
+        ActivePairPrices.checkChangesActivePairPrices(driverChrome); //item 3
+        ActivePairPrices.checkSymbolsValues(driverChrome); //item 4
+        MarketBlock.checkMarketBlockDisplay(driverChrome, j); //item 2 - displayed market block
+        MarketBlock.checkMarketBlockDismiss(driverChrome, j); //item 2 - dismissed market block
+        Timeframes.visitAllTimeframes(driverChrome, j); //item 5
 
         //item 6 - TODO cannot select element using selenium and javascript
 

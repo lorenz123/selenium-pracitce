@@ -13,7 +13,7 @@ import static com.bibvip.variables.FuturesVars.ACTIVE_PAIR_LASTPRICE_CHANGE;
 import static com.bibvip.variables.FuturesVars.SYMBOLS_BLOCK;
 
 @Slf4j
-class LeftPanePrices {
+public class ActivePairPrices {
 
     //fields of item 1
     public static String activePair;
@@ -29,12 +29,10 @@ class LeftPanePrices {
     public static String indexPrice;//[3]
     public static String fundingRate;//[5]
     public static String estNextRate;//[7]
-    public static String oneDayVolume;//[8]
-    public static String cont;//[9]
+    public static String oneDayVolume;//[9]
 
-    
     //item 1,3,4
-    public static void checkPrices(WebDriver driverChrome) throws InterruptedException {
+    public static void checkActivePairPrices(WebDriver driverChrome) throws InterruptedException {
         //item 1
         //get elements
         WebElement fetchActivePair = driverChrome.findElement(getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));
@@ -54,11 +52,13 @@ class LeftPanePrices {
         } else if (activePairChange.equals("--%")) {
             log.error("Change of Active Pair is not displayed!");
         } else {
-            log.info("First Item - No errors");
+            log.info("Active Pair is "+activePair+" with price of "+activePairPrice+" and Change of "+activePairChange);
         }
-
         Thread.sleep(15000);
 
+    }
+
+    public static void checkChangesActivePairPrices(WebDriver driverChrome) {
         //item 3
         //get elements
         WebElement checkActivePair2ndTime = driverChrome.findElement(getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));
@@ -77,8 +77,9 @@ class LeftPanePrices {
         } else {
             log.info("Last Price and Change has changed after 15seconds");
         }
+    }
 
-
+    public static void checkSymbolsValues(WebDriver driverChrome){
         //item 4
         //get elements
         WebElement symbolsValues = driverChrome.findElement(getBy(SYMBOLS_BLOCK, ElementType.CSS_SELECTOR));
@@ -96,8 +97,7 @@ class LeftPanePrices {
         indexPrice = removedNullAndEmptyStrings[3];
         fundingRate = removedNullAndEmptyStrings[5];
         estNextRate = removedNullAndEmptyStrings[7];
-        oneDayVolume = removedNullAndEmptyStrings[8];
-        cont = removedNullAndEmptyStrings[9];
+        oneDayVolume = removedNullAndEmptyStrings[9];
 
         //validation area (improve this by selecting only the selected fields for the error)
         for(int i = 0; i < removedNullAndEmptyStrings.length; i++){
@@ -113,8 +113,6 @@ class LeftPanePrices {
             }
 
         }
-
-
     }
 
 }
