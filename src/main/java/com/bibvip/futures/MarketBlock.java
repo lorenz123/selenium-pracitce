@@ -34,6 +34,6 @@ public class MarketBlock {
         log.info("Market Block was dismissed after clicking dropdown button");
 
         isMarketBlockDismissed = driverChrome.findElement(getBy(MARKET_BLOCK, ElementType.CSS_SELECTOR)).isDisplayed();
-        log.info("Market Block displayed? " + String.valueOf(isMarketBlockDismissed));
+        log.info("Market Block displayed? " + String.valueOf(isMarketBlockDismissed)); 
     }
 }

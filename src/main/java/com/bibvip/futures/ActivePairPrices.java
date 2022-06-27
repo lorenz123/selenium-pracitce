@@ -79,7 +79,7 @@ public class ActivePairPrices {
         } else if (activePairChange == secondActivePairChange) {
             log.info("Change did not change after 15seconds");
         } else {
-            log.info("Last Price and Change has changed after 15seconds");
+            log.info("After 15secs, Price is "+secondActivePairPrice+" and Change is "+secondActivePairChange);
         }
     }
 
