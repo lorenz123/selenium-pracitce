@@ -16,9 +16,9 @@ public class FuturesAuto {
         ActivePairPrices.checkActivePairPrices(driverChrome); //item 1
         ActivePairPrices.checkChangesActivePairPrices(driverChrome); //item 3
         ActivePairPrices.checkSymbolsValues(driverChrome); //item 4
-        MarketBlock.checkMarketBlockDisplay(driverChrome, j); //item 2 - displayed market block
-        MarketBlock.checkMarketBlockDismiss(driverChrome, j); //item 2 - dismissed market block
-        Timeframes.visitAllTimeframes(driverChrome, j); //item 5
+        MarketBlock.checkMarketBlockDisplay(driverChrome); //item 2 - displayed market block
+        MarketBlock.checkMarketBlockDismiss(driverChrome); //item 2 - dismissed market block
+        Timeframes.visitAllTimeframes(driverChrome); //item 5
 
         
 
