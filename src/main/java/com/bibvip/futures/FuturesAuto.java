@@ -8,7 +8,7 @@ import static com.bibvip.jumpers.Jumper.jumpToFutures;
 
 public class FuturesAuto {
 
-    public static void doFuturesAuto(WebDriver driverChrome, JavascriptExecutor j) throws InterruptedException {
+    public static void doFuturesAuto(WebDriver driverChrome, JavascriptExecutor j) throws Exception {
         //Perform Auto Futures using selenium
 
         jumpToFutures(driverChrome); //reusable jumper to Futures page

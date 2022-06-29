@@ -10,7 +10,7 @@ import static com.bibvip.futures.FuturesAuto.doFuturesAuto;
 
 public class ExecuteFutures {
 
-    public static void performFutures() throws InterruptedException, MalformedURLException {
+    public static void performFutures() throws Exception {
         //start chrome driver
         WebDriver driverChrome = getChromeConfig();
         JavascriptExecutor j = (JavascriptExecutor) driverChrome;

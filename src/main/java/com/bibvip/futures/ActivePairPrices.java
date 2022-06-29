@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.bibvip.consts.ElementType.ID;
@@ -37,6 +38,16 @@ public class ActivePairPrices {
 
     //item 1,3,4
     public static void checkActivePairPrices(WebDriver driverChrome) throws InterruptedException {
+
+
+        ArrayList<String>[][] arrayOfCharacters = new ArrayList[9][7];
+        for(int i=0;i<arrayOfCharacters.length;i++){
+            for(int i2=0;i2<arrayOfCharacters[i].length;i2++){
+                arrayOfCharacters[i][i2]=new ArrayList<String>(20);
+
+            }
+        }
+
         //item 1
         //get elements
         WebElement fetchActivePair = driverChrome.findElement(getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));

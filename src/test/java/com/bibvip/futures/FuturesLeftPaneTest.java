@@ -7,6 +7,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class FuturesLeftPaneTest {
     Field[] activePairPricesFields = ActivePairPrices.class.getDeclaredFields();
     Field[] marketBlockFields = MarketBlock.class.getDeclaredFields();
     Field[] timeframesFields = Timeframes.class.getDeclaredFields();
+
     WebDriver driverChrome;
     JavascriptExecutor j;
 
@@ -43,21 +46,13 @@ public class FuturesLeftPaneTest {
         @Test
         @Order(1)
         @DisplayName("Test active pair, it's price and change values")
-        void testActivePairPrices() throws IllegalAccessException, InterruptedException {
+        void testActivePairPrices() throws InterruptedException {
             ActivePairPrices.checkActivePairPrices(driverChrome);
-            Field activePair = activePairPricesFields[1];
-            Field activePairPrice = activePairPricesFields[2];
-            Field activePairChange = activePairPricesFields[3];
 
-            Object activePairStr = activePair.get(String.class);
-            Object activePairPriceStr = activePairPrice.get(String.class);
-            Object activePairChangeStr = activePairChange.get(String.class);
-
-            assertEquals("BTCUSDT", activePairStr);
-            assertNotEquals("--", activePairPriceStr);
-            assertNotEquals("--", activePairChangeStr);
-
-            log.info("Active Pair: "+activePairStr+", Price: "+activePairPriceStr+", Change: "+activePairChangeStr);
+            assertEquals("BTCUSDT", ActivePairPrices.activePair);
+            assertNotEquals("--", ActivePairPrices.activePairPrice);
+            assertNotEquals("--", ActivePairPrices.activePairChange);
+            log.info("Active Pair: "+ActivePairPrices.activePair+", Price: "+ActivePairPrices.activePairPrice+", Change: "+ActivePairPrices.activePairChange);
         }
 
         @Test
@@ -65,28 +60,17 @@ public class FuturesLeftPaneTest {
         @DisplayName("Test CHANGES of active pair, it's price and change values")
         void testSecondActivePairPrices() throws IllegalAccessException {
             ActivePairPrices.checkChangesActivePairPrices(driverChrome);
-            Field activePair = activePairPricesFields[1];
-            Field activePairPrice = activePairPricesFields[2];
-            Field activePairChange = activePairPricesFields[3];
-            Field activeSecondPairPrice = activePairPricesFields[4];
-            Field activeSecondPairChange = activePairPricesFields[5];
 
-            Object activePairStr = activePair.get(String.class);
-            Object activePairPriceStr = activePairPrice.get(String.class);
-            Object activePairChangeStr = activePairChange.get(String.class);
-            Object activeSecondPairPriceStr = activeSecondPairPrice.get(String.class);
-            Object activeSecondPairChangeStr = activeSecondPairChange.get(String.class);
+            assertEquals("BTCUSDT", ActivePairPrices.activePair);
+            assertNotEquals(ActivePairPrices.secondActivePairPrice, ActivePairPrices.activePairPrice);
+            assertNotEquals(ActivePairPrices.secondActivePairChange, ActivePairPrices.activePairChange);
 
-            assertEquals("BTCUSDT", activePairStr);
-            assertNotEquals(activeSecondPairPriceStr, activePairPriceStr);
-            assertNotEquals(activeSecondPairChangeStr, activePairChangeStr);
-
-            log.info("Active Pair: "+activePairStr+", Second Price: "+activeSecondPairPriceStr+", Second Change: "+activeSecondPairChangeStr);
+            log.info("Active Pair: "+ActivePairPrices.activePair+", Second Price: "+ActivePairPrices.secondActivePairPrice+", Second Change: "+ActivePairPrices.secondActivePairChange);
         }
 
         @AfterEach
         @DisplayName("Wait for 5 seconds")
-        void beforeEach() throws InterruptedException {
+        void afterEach() throws InterruptedException {
             Thread.sleep(5000);
         }
     }
@@ -100,35 +84,19 @@ public class FuturesLeftPaneTest {
         @Test
         @DisplayName("Test Symbols Values")
         @Order(1)
-        void testSymbolsValues() throws IllegalAccessException {
+        void testSymbolsValues() {
             ActivePairPrices.checkSymbolsValues(driverChrome);
-            Field markPrice = activePairPricesFields[6];
-            Field indexPrice = activePairPricesFields[7];
-            Field fundingRate = activePairPricesFields[8];
-            Field estNextRate = activePairPricesFields[9];
-            Field volume = activePairPricesFields[10];
 
-            Object markPriceStr = markPrice.get(String.class);
-            Object indexPriceStr = indexPrice.get(String.class);
-            Object fundingRateStr = fundingRate.get(String.class);
-            Object estNextRateStr = estNextRate.get(String.class);
-            Object volumeStr = volume.get(String.class);
-
-
-            assertNotEquals("--", markPriceStr);
-            log.info("Mark Price value : "+markPriceStr);
-
-            assertNotEquals("--", indexPriceStr);
-            log.info("Index Price value : "+indexPriceStr);
-
-            assertNotEquals("--% /", fundingRateStr);
-            log.info("Funding Rate value : "+fundingRateStr);
-
-            assertNotEquals("--%", estNextRateStr);
-            log.info("Est. Next Rate value : "+estNextRateStr);
-
-            assertNotEquals("-- BTC", volumeStr);
-            log.info("24h Volume value : "+volumeStr);
+            assertNotEquals("--", ActivePairPrices.markPrice);
+            log.info("Mark Price value : "+ActivePairPrices.markPrice);
+            assertNotEquals("--", ActivePairPrices.indexPrice);
+            log.info("Index Price value : "+ActivePairPrices.indexPrice);
+            assertNotEquals("--% /", ActivePairPrices.fundingRate);
+            log.info("Funding Rate value : "+ActivePairPrices.fundingRate);
+            assertNotEquals("--%", ActivePairPrices.estNextRate);
+            log.info("Est. Next Rate value : "+ActivePairPrices.estNextRate);
+            assertNotEquals("-- BTC", ActivePairPrices.oneDayVolume);
+            log.info("24h Volume value : "+ActivePairPrices.oneDayVolume);
         }
     }
 
@@ -141,28 +109,26 @@ public class FuturesLeftPaneTest {
         @Test
         @DisplayName("Test of Market Block if Displayed")
         @Order(1)
-        void checkDisplay() throws InterruptedException, IllegalAccessException {
+        void checkDisplay() throws InterruptedException {
             MarketBlock.checkMarketBlockDisplay(driverChrome);
-            Field isMarketBlockDisplayed = marketBlockFields[1];
-            Object isMarketBlockDisplayedStr = isMarketBlockDisplayed.get(String.class);
-            assertEquals(true, isMarketBlockDisplayedStr);
-            log.info("Market Block Displayed is: "+isMarketBlockDisplayedStr);
+
+            assertEquals(true, MarketBlock.isMarketBlockDisplayed);
+            log.info("Market Block Displayed is: "+MarketBlock.isMarketBlockDisplayed);
         }
 
         @Test
         @DisplayName("Test of Market Block if Dismissed")
         @Order(2)
-        void checkDismiss() throws InterruptedException, IllegalAccessException {
+        void checkDismiss() {
             MarketBlock.checkMarketBlockDismiss(driverChrome);
-            Field isMarketBlockDismissed = marketBlockFields[2];
-            Object isMarketBlockDismissedStr = isMarketBlockDismissed.get(String.class);
-            assertEquals(false, isMarketBlockDismissedStr);
-            log.info("Market Block Displayed is: "+isMarketBlockDismissedStr);
+
+            assertEquals(false, MarketBlock.isMarketBlockDismissed);
+            log.info("Market Block Displayed is: "+MarketBlock.isMarketBlockDismissed);
         }
 
         @AfterEach
         @DisplayName("Wait for 3 seconds after each test")
-        void beforeEach() throws InterruptedException {
+        void afterEach() throws InterruptedException {
             Thread.sleep(3000);
         }
 
@@ -170,6 +136,51 @@ public class FuturesLeftPaneTest {
 
     @Nested
     @Order(4)
+    @DisplayName("Test for Chart Setting buttons")
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    class ChartSettingBtns {
+
+        @Test
+        @DisplayName("Test of Chart Types Options")
+        @Order(1)
+        void checkDisplayChartTypesOptions() throws InterruptedException {
+            Timeframes.checkChartTypeOptions(driverChrome);
+
+            assertNotEquals(false, Timeframes.isChartTypesOptions);
+            log.info("Chart Types Options is: "+Timeframes.isChartTypesOptions);
+
+        }
+
+        @Test
+        @DisplayName("Test of Indicators Options")
+        @Order(2)
+        void checkDisplayIndicatorsOptions() throws InterruptedException {
+            Timeframes.checkIndicatorsOptions(driverChrome);
+
+            assertNotEquals(false, Timeframes.isIndicatorsOptionsAppearing);
+            log.info("Indicators Options is: "+Timeframes.isIndicatorsOptionsAppearing);
+
+        }
+
+        @Test
+        @DisplayName("Test of Chart Properties")
+        @Order(3)
+        void checkDisplayChartProperties() throws InterruptedException {
+            Timeframes.checkChartProperties(driverChrome);
+
+            assertNotEquals(false, Timeframes.isChartPropertiesAppearing);
+            log.info("Chart Properties is: "+Timeframes.isChartPropertiesAppearing);
+        }
+
+        @AfterEach
+        @DisplayName("Wait for 2 seconds")
+        void afterEach() throws InterruptedException {
+            Thread.sleep(2000);
+        }
+    }
+
+    @Nested
+    @Order(5)
     @DisplayName("Graph Timeframes Tests")
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class GraphTimeframes {
@@ -177,127 +188,350 @@ public class FuturesLeftPaneTest {
         @Test
         @DisplayName("Test of 1 minute timeframe values")
         @Order(1)
-        void checkOneMinuteTF() throws InterruptedException, IllegalAccessException {
+        void checkOneMinuteTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, ONE_MIN_TF);
 
-//            Field oneMin = timeframesFields[1];
-//            Object oneMinStr = oneMin.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) oneMinStr);
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(0));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(0));
 
-//            Field timeframeValues = timeframesFields[11];
-//            Object activeTFStr = timeframeValues.get(String.class);
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(1));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(1));
 
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(2));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(2));
 
-//            log.info("Active Time frame selected: "+activeTFStr);
-//            assertNotEquals("n/a", activeTFStr);
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(3));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(3));
 
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(4));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(4));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(5));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(5));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(6));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(6));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(7));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(7));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(8));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(8));
 
         }
 
         @Test
         @DisplayName("Test of 5 minutes timeframe values")
         @Order(2)
-        void checkFiveMinuteTF() throws IllegalAccessException, InterruptedException {
-            Field fiveMin = timeframesFields[2];
-            Object fiveMinStr = fiveMin.get(String.class);
-            Timeframes.timeframeExecutor(driverChrome, (String) fiveMinStr);
-            assertNotEquals("n/a", fiveMinStr);
-            log.info("Time frame selected: "+fiveMinStr);
+        void checkFiveMinuteTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, FIVE_MIN_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(9));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(9));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(10));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(10));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(11));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(11));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(12));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(12));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(13));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(13));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(14));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(14));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(15));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(15));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(16));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(16));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(17));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(17));
         }
+
+        @Test
+        @DisplayName("Test of 15 minutes timeframe values")
+        @Order(3)
+        void checkFifteenMinuteTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, FIFTEEN_MIN_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(18));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(18));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(19));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(19));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(20));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(20));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(21));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(21));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(22));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(22));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(23));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(23));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(24));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(24));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(25));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(25));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(26));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(26));
+        }
+
+        @Test
+        @DisplayName("Test of 30 minutes timeframe values")
+        @Order(4)
+        void checkThirtyMinuteTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, THIRTY_MIN_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(27));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(27));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(28));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(28));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(29));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(29));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(30));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(30));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(31));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(31));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(32));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(32));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(33));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(33));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(34));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(34));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(35));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(35));
+        }
+
+        @Test
+        @DisplayName("Test of 60 minutes timeframe values")
+        @Order(5)
+        void checkSixtyMinuteTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, SIXTY_MIN_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(36));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(36));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(37));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(37));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(38));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(38));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(39));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(39));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(40));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(40));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(41));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(41));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(42));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(42));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(43));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(43));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(44));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(44));
+        }
+
+        @Test
+        @DisplayName("Test of 4 hours timeframe values")
+        @Order(6)
+        void checkFourHoursTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, FOUR_HOUR_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(45));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(45));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(46));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(46));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(47));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(47));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(48));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(48));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(49));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(49));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(50));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(50));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(51));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(51));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(52));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(52));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(53));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(53));
+        }
+
+        @Test
+        @DisplayName("Test of 1 day timeframe values")
+        @Order(7)
+        void checkOneDayTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, ONE_DAY_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(54));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(54));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(55));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(55));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(56));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(56));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(57));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(57));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(58));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(58));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(59));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(59));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(60));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(60));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(61));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(61));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(62));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(62));
+        }
+
+        @Test
+        @DisplayName("Test of 1 week timeframe values")
+        @Order(8)
+        void checkOneWeekTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, ONE_WEEK_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(63));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(63));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(64));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(64));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(65));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(65));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(66));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(66));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(67));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(67));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(68));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(68));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(69));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(69));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(70));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(70));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(71));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(71));
+        }
+
+        @Test
+        @DisplayName("Test of 1 month timeframe values")
+        @Order(9)
+        void checkOneMonthTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, ONE_MONTH_TF);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(72));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(72));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(73));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(73));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(74));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(74));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(75));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(75));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(76));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(76));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(77));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(77));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(78));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(78));
+
+//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(79));
+//            log.info("MA10 : "+Timeframes.allGraphElementsList.get(79));
 //
-//        @Test
-//        @DisplayName("Test of 15 minutes timeframe values")
-//        @Order(3)
-//        void checkFifteenMinuteTF() throws IllegalAccessException, InterruptedException {
-//            Field fifteenMin = timeframesFields[3];
-//            Object fifteenMinStr = fifteenMin.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) fifteenMinStr);
-//            assertNotEquals("n/a", fifteenMinStr);
-//            log.info("Time frame selected: "+fifteenMinStr);
-//        }
+//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(80));
+//            log.info("MA30 : "+Timeframes.allGraphElementsList.get(80));
+        }
+
+        @Test
+        @DisplayName("Test of full screen timeframe values")
+        @Order(10)
+        void checkFullScreenTF() throws Exception {
+            Timeframes.timeframeExecutor(driverChrome, FULL_SCREEN_GRAPH);
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(81));
+            log.info("Active Timeframe : "+Timeframes.allGraphElementsList.get(81));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(82));
+            log.info("Open Price : "+Timeframes.allGraphElementsList.get(82));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(83));
+            log.info("High Price : "+Timeframes.allGraphElementsList.get(83));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(84));
+            log.info("Low Price : "+Timeframes.allGraphElementsList.get(84));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(85));
+            log.info("Close Price : "+Timeframes.allGraphElementsList.get(85));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(86));
+            log.info("Change : "+Timeframes.allGraphElementsList.get(86));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(87));
+            log.info("MA5 : "+Timeframes.allGraphElementsList.get(87));
+
+//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(88));
+//            log.info("MA10 : "+Timeframes.allGraphElementsList.get(88));
 //
-//        @Test
-//        @DisplayName("Test of 30 minutes timeframe values")
-//        @Order(4)
-//        void checkThirtyMinuteTF() throws IllegalAccessException, InterruptedException {
-//            Field thirtyMin = timeframesFields[4];
-//            Object thirtyMinStr = thirtyMin.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) thirtyMinStr);
-//            assertNotEquals("n/a", thirtyMinStr);
-//            log.info("Time frame selected: "+thirtyMinStr);
-//        }
-//
-//        @Test
-//        @DisplayName("Test of 60 minutes timeframe values")
-//        @Order(5)
-//        void checkSixtyMinuteTF() throws IllegalAccessException, InterruptedException {
-//            Field sixtyMin = timeframesFields[5];
-//            Object sixtyMinStr = sixtyMin.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) sixtyMinStr);
-//            assertNotEquals("n/a", sixtyMinStr);
-//            log.info("Time frame selected: "+sixtyMinStr);
-//        }
-//
-//        @Test
-//        @DisplayName("Test of 4 hours timeframe values")
-//        @Order(6)
-//        void checkFourHoursTF() throws IllegalAccessException, InterruptedException {
-//            Field fourHour = timeframesFields[6];
-//            Object fourHourStr = fourHour.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) fourHourStr);
-//            assertNotEquals("n/a", fourHourStr);
-//            log.info("Time frame selected: "+fourHourStr);
-//        }
-//
-//        @Test
-//        @DisplayName("Test of 1 day timeframe values")
-//        @Order(7)
-//        void checkOneDayTF() throws IllegalAccessException, InterruptedException {
-//            Field oneDay = timeframesFields[7];
-//            Object oneDayStr = oneDay.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) oneDayStr);
-//            assertNotEquals("n/a", oneDayStr);
-//            log.info("Time frame selected: "+oneDayStr);
-//        }
-//
-//        @Test
-//        @DisplayName("Test of 1 week timeframe values")
-//        @Order(8)
-//        void checkOneWeekTF() throws IllegalAccessException, InterruptedException {
-//            Field oneWeek = timeframesFields[8];
-//            Object oneWeekStr = oneWeek.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) oneWeekStr);
-//            assertNotEquals("n/a", oneWeekStr);
-//            log.info("Time frame selected: "+oneWeekStr);
-//        }
-//
-//        @Test
-//        @DisplayName("Test of 1 month timeframe values")
-//        @Order(9)
-//        void checkOneMonthTF() throws IllegalAccessException, InterruptedException  {
-//            Field oneMonth = timeframesFields[9];
-//            Object oneMonthStr = oneMonth.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) oneMonthStr);
-//            assertNotEquals("n/a", oneMonthStr);
-//            log.info("Time frame selected: "+oneMonthStr);
-//        }
-//
-//        @Test
-//        @DisplayName("Test of full screen timeframe values")
-//        @Order(10)
-//        void checkFullScreenTF() throws InterruptedException, IllegalAccessException {
-//            Field fullScreen = timeframesFields[10];
-//            Object fullScreenStr = fullScreen.get(String.class);
-//            Timeframes.timeframeExecutor(driverChrome, (String) fullScreenStr);
-//
-//
-//            assertNotEquals("n/a", fullScreenStr);
-//            log.info("Full screen selected?: "+fullScreenStr);
-//        }
+//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(89));
+//            log.info("MA30 : "+Timeframes.allGraphElementsList.get(89));
+        }
 
         @AfterEach
         @DisplayName("Wait for 2 seconds")
-        void beforeEach() throws InterruptedException {
+        void afterEach() throws InterruptedException {
             Thread.sleep(2000);
         }
     }
+
+
 }
