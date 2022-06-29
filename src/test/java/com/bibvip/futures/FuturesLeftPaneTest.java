@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -13,6 +14,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import static com.bibvip.configs.DriverConfig.getChromeConfig;
+import static com.bibvip.utility.ThinkingTimeUtil.getWebDriverWait;
 import static com.bibvip.variables.FuturesVars.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -22,19 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class FuturesLeftPaneTest {
 
-//    ArrayList<String> activePairPricesFields = new ArrayList();
-    Field[] activePairPricesFields = ActivePairPrices.class.getDeclaredFields();
-    Field[] marketBlockFields = MarketBlock.class.getDeclaredFields();
-    Field[] timeframesFields = Timeframes.class.getDeclaredFields();
-
     WebDriver driverChrome;
     JavascriptExecutor j;
+    WebDriverWait wait;
 
     @BeforeAll
     @DisplayName("Driver runner, Jumper Futures")
     void testRunDriver() throws MalformedURLException {
         driverChrome = getChromeConfig();
+        wait = getWebDriverWait(driverChrome);
         Jumper.jumpToFutures(driverChrome);
+
     }
 
     @Nested
@@ -47,7 +47,7 @@ public class FuturesLeftPaneTest {
         @Order(1)
         @DisplayName("Test active pair, it's price and change values")
         void testActivePairPrices() throws InterruptedException {
-            ActivePairPrices.checkActivePairPrices(driverChrome);
+            ActivePairPrices.checkActivePairPrices(wait);
 
             assertEquals("BTCUSDT", ActivePairPrices.activePair);
             assertNotEquals("--", ActivePairPrices.activePairPrice);
@@ -59,7 +59,7 @@ public class FuturesLeftPaneTest {
         @Order(2)
         @DisplayName("Test CHANGES of active pair, it's price and change values")
         void testSecondActivePairPrices() throws IllegalAccessException {
-            ActivePairPrices.checkChangesActivePairPrices(driverChrome);
+            ActivePairPrices.checkChangesActivePairPrices(wait);
 
             assertEquals("BTCUSDT", ActivePairPrices.activePair);
             assertNotEquals(ActivePairPrices.secondActivePairPrice, ActivePairPrices.activePairPrice);
@@ -68,11 +68,11 @@ public class FuturesLeftPaneTest {
             log.info("Active Pair: "+ActivePairPrices.activePair+", Second Price: "+ActivePairPrices.secondActivePairPrice+", Second Change: "+ActivePairPrices.secondActivePairChange);
         }
 
-        @AfterEach
-        @DisplayName("Wait for 5 seconds")
-        void afterEach() throws InterruptedException {
-            Thread.sleep(5000);
-        }
+//        @AfterEach
+//        @DisplayName("Wait for 5 seconds")
+//        void afterEach() throws InterruptedException {
+//            Thread.sleep(5000);
+//        }
     }
 
     @Nested
@@ -85,7 +85,7 @@ public class FuturesLeftPaneTest {
         @DisplayName("Test Symbols Values")
         @Order(1)
         void testSymbolsValues() {
-            ActivePairPrices.checkSymbolsValues(driverChrome);
+            ActivePairPrices.checkSymbolsValues(wait);
 
             assertNotEquals("--", ActivePairPrices.markPrice);
             log.info("Mark Price value : "+ActivePairPrices.markPrice);
@@ -126,11 +126,11 @@ public class FuturesLeftPaneTest {
             log.info("Market Block Displayed is: "+MarketBlock.isMarketBlockDismissed);
         }
 
-        @AfterEach
-        @DisplayName("Wait for 3 seconds after each test")
-        void afterEach() throws InterruptedException {
-            Thread.sleep(3000);
-        }
+//        @AfterEach
+//        @DisplayName("Wait for 3 seconds after each test")
+//        void afterEach() throws InterruptedException {
+//            Thread.sleep(3000);
+//        }
 
     }
 
@@ -144,10 +144,10 @@ public class FuturesLeftPaneTest {
         @DisplayName("Test of Chart Types Options")
         @Order(1)
         void checkDisplayChartTypesOptions() throws InterruptedException {
-            Timeframes.checkChartTypeOptions(driverChrome);
+            ChartSettings.checkChartTypeOptions(wait);
 
-            assertNotEquals(false, Timeframes.isChartTypesOptions);
-            log.info("Chart Types Options is: "+Timeframes.isChartTypesOptions);
+            assertNotEquals(false, ChartSettings.isChartTypesOptions);
+            log.info("Chart Types Options is: "+ChartSettings.isChartTypesOptions);
 
         }
 
@@ -155,10 +155,10 @@ public class FuturesLeftPaneTest {
         @DisplayName("Test of Indicators Options")
         @Order(2)
         void checkDisplayIndicatorsOptions() throws InterruptedException {
-            Timeframes.checkIndicatorsOptions(driverChrome);
+            ChartSettings.checkIndicatorsOptions(wait);
 
-            assertNotEquals(false, Timeframes.isIndicatorsOptionsAppearing);
-            log.info("Indicators Options is: "+Timeframes.isIndicatorsOptionsAppearing);
+            assertNotEquals(false, ChartSettings.isIndicatorsOptionsAppearing);
+            log.info("Indicators Options is: "+ChartSettings.isIndicatorsOptionsAppearing);
 
         }
 
@@ -166,17 +166,17 @@ public class FuturesLeftPaneTest {
         @DisplayName("Test of Chart Properties")
         @Order(3)
         void checkDisplayChartProperties() throws InterruptedException {
-            Timeframes.checkChartProperties(driverChrome);
+            ChartSettings.checkChartProperties(wait);
 
-            assertNotEquals(false, Timeframes.isChartPropertiesAppearing);
-            log.info("Chart Properties is: "+Timeframes.isChartPropertiesAppearing);
+            assertNotEquals(false, ChartSettings.isChartPropertiesAppearing);
+            log.info("Chart Properties is: "+ChartSettings.isChartPropertiesAppearing);
         }
 
-        @AfterEach
-        @DisplayName("Wait for 2 seconds")
-        void afterEach() throws InterruptedException {
-            Thread.sleep(2000);
-        }
+//        @AfterEach
+//        @DisplayName("Wait for 2 seconds")
+//        void afterEach() throws InterruptedException {
+//            Thread.sleep(2000);
+//        }
     }
 
     @Nested
@@ -485,11 +485,11 @@ public class FuturesLeftPaneTest {
             assertNotEquals("n/a", Timeframes.allGraphElementsList.get(78));
             log.info("MA5 : "+Timeframes.allGraphElementsList.get(78));
 
-//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(79));
-//            log.info("MA10 : "+Timeframes.allGraphElementsList.get(79));
-//
-//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(80));
-//            log.info("MA30 : "+Timeframes.allGraphElementsList.get(80));
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(79));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(79));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(80));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(80));
         }
 
         @Test
@@ -519,18 +519,18 @@ public class FuturesLeftPaneTest {
             assertNotEquals("n/a", Timeframes.allGraphElementsList.get(87));
             log.info("MA5 : "+Timeframes.allGraphElementsList.get(87));
 
-//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(88));
-//            log.info("MA10 : "+Timeframes.allGraphElementsList.get(88));
-//
-//            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(89));
-//            log.info("MA30 : "+Timeframes.allGraphElementsList.get(89));
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(88));
+            log.info("MA10 : "+Timeframes.allGraphElementsList.get(88));
+
+            assertNotEquals("n/a", Timeframes.allGraphElementsList.get(89));
+            log.info("MA30 : "+Timeframes.allGraphElementsList.get(89));
         }
 
-        @AfterEach
-        @DisplayName("Wait for 2 seconds")
-        void afterEach() throws InterruptedException {
-            Thread.sleep(2000);
-        }
+//        @AfterEach
+//        @DisplayName("Wait for 1 second")
+//        void afterEach() throws InterruptedException {
+//            Thread.sleep(1000);
+//        }
     }
 
 

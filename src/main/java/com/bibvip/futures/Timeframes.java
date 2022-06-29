@@ -1,18 +1,18 @@
 package com.bibvip.futures;
 
-import com.bibvip.jumpers.Jumper;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bibvip.configs.DriverConfig.driverChrome;
 import static com.bibvip.consts.ElementType.*;
 import static com.bibvip.utility.AppUtil.getBy;
+import static com.bibvip.utility.ThinkingTimeUtil.getElementWithPolling;
 import static com.bibvip.variables.FuturesVars.*;
 
 @Slf4j
@@ -20,17 +20,9 @@ public class Timeframes {
 
     //fields of my each values in a timeframe
     public static List<String> allGraphElementsList = new ArrayList<>();
-    public static String isChartTypesOptions;
-    public static String isIndicatorsOptionsAppearing;
-    public static String isChartPropertiesAppearing;
-
-    public static void visitAllTimeframes(WebDriver driverChrome) throws Exception {
 
 
-        checkChartTypeOptions(driverChrome);//item 6
-        checkIndicatorsOptions(driverChrome);//item 6
-        checkChartProperties(driverChrome);//item 6
-
+    public static void visitAllTimeframes(WebDriver driverChrome, WebDriverWait wait) throws Exception {
         //item 5
         timeframeExecutor(driverChrome, ONE_MIN_TF);
         timeframeExecutor(driverChrome, FIVE_MIN_TF);
@@ -41,6 +33,11 @@ public class Timeframes {
         timeframeExecutor(driverChrome, ONE_DAY_TF);
         timeframeExecutor(driverChrome, ONE_WEEK_TF);
         timeframeExecutor(driverChrome, ONE_MONTH_TF);
+
+        ChartSettings.checkChartTypeOptions(wait);//item 6
+        ChartSettings.checkIndicatorsOptions(wait);//item 6
+        ChartSettings.checkChartProperties(wait);//item 6
+
         timeframeExecutor(driverChrome, FULL_SCREEN_GRAPH);
 
         log.info("Graph Elements are: {}", allGraphElementsList);
@@ -54,7 +51,7 @@ public class Timeframes {
     }
 
     public static void timeframeExecutor(WebDriver driverChrome, String timeframe) throws Exception {
-        checkTimeframeValues(driverChrome, timeframe, ACTIVE_TF_GRAPH, 2000);
+        checkTimeframeValues(driverChrome, timeframe, ACTIVE_TF_GRAPH, 1000);
         checkTimeframeValues(driverChrome, timeframe, OPEN_PRICE, 0);
         checkTimeframeValues(driverChrome, timeframe, HIGH_PRICE, 0);
         checkTimeframeValues(driverChrome, timeframe, LOW_PRICE, 0);
@@ -90,45 +87,5 @@ public class Timeframes {
         Thread.sleep(sleepTime);
     }
 
-    public static void checkChartTypeOptions(WebDriver driverChrome) throws InterruptedException {
-        //item 6
-        WebElement iframe2 = driverChrome.findElement(getBy("iframe", TAG_NAME)); //Solution to my problem <3
-        driverChrome.switchTo().frame(iframe2);
-        WebElement chartTypesBtn = driverChrome.findElement(getBy("header-toolbar-chart-styles", ID));
-        chartTypesBtn.click();
-        isChartTypesOptions = String.valueOf(chartTypesBtn.isDisplayed());
-        log.info("Chart Types options appeared? " + isChartTypesOptions);
-
-        driverChrome.switchTo().defaultContent();
-        Thread.sleep(3000);
-
-    }
-
-    public static void checkIndicatorsOptions(WebDriver driverChrome) throws InterruptedException {
-        //item 6
-        WebElement iframe2 = driverChrome.findElement(getBy("iframe", TAG_NAME)); //Solution to my problem <3
-        driverChrome.switchTo().frame(iframe2);
-        WebElement indicatorsBtn = driverChrome.findElement(getBy("header-toolbar-indicators", ID));
-        indicatorsBtn.click();
-        isIndicatorsOptionsAppearing = String.valueOf(indicatorsBtn.isDisplayed());
-        log.info("Indicators options appeared? " + isIndicatorsOptionsAppearing);
-
-        driverChrome.switchTo().defaultContent();
-        Thread.sleep(3000);
-    }
-
-    public static void checkChartProperties(WebDriver driverChrome) throws InterruptedException {
-        //item 6
-        WebElement iframe2 = driverChrome.findElement(getBy("iframe", TAG_NAME)); //Solution to my problem <3
-        driverChrome.switchTo().frame(iframe2);
-        WebElement chartProperties = driverChrome.findElement(getBy("header-toolbar-properties", ID));
-        chartProperties.click();
-        isChartPropertiesAppearing = String.valueOf(chartProperties.isDisplayed());
-        log.info("Chart Properties options appeared? " + isChartPropertiesAppearing);
-
-        driverChrome.switchTo().defaultContent();
-        Thread.sleep(3000);
-
-    }
 
 }

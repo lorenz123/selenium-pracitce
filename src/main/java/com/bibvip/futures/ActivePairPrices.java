@@ -3,17 +3,14 @@ package com.bibvip.futures;
 
 import com.bibvip.consts.ElementType;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.bibvip.consts.ElementType.ID;
-import static com.bibvip.consts.ElementType.TAG_NAME;
 import static com.bibvip.utility.AppUtil.getBy;
+import static com.bibvip.utility.ThinkingTimeUtil.getElementWithPolling;
 import static com.bibvip.variables.FuturesVars.ACTIVE_PAIR_LASTPRICE_CHANGE;
 import static com.bibvip.variables.FuturesVars.SYMBOLS_BLOCK;
 
@@ -37,7 +34,7 @@ public class ActivePairPrices {
     public static String oneDayVolume;//[9]
 
     //item 1,3,4
-    public static void checkActivePairPrices(WebDriver driverChrome) throws InterruptedException {
+    public static void checkActivePairPrices(WebDriverWait wait) throws InterruptedException {
 
 
         ArrayList<String>[][] arrayOfCharacters = new ArrayList[9][7];
@@ -50,7 +47,7 @@ public class ActivePairPrices {
 
         //item 1
         //get elements
-        WebElement fetchActivePair = driverChrome.findElement(getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));
+        WebElement fetchActivePair = getElementWithPolling(wait, getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));
         String convertActivePairToText = fetchActivePair.getText();
         String[] seperateActivePairValues = convertActivePairToText.split("\\n| "); //regex operation OR (|) was used to seperate line break and white space to create an array
 
@@ -69,14 +66,14 @@ public class ActivePairPrices {
         } else {
             log.info("Active Pair is "+activePair+" with price of "+activePairPrice+" and Change of "+activePairChange);
         }
-        Thread.sleep(15000);
+        Thread.sleep(5000);
 
     }
 
-    public static void checkChangesActivePairPrices(WebDriver driverChrome) {
+    public static void checkChangesActivePairPrices(WebDriverWait wait) {
         //item 3
         //get elements
-        WebElement checkActivePair2ndTime = driverChrome.findElement(getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));
+        WebElement checkActivePair2ndTime = getElementWithPolling(wait, getBy(ACTIVE_PAIR_LASTPRICE_CHANGE, ElementType.CSS_SELECTOR));
         String convertActivePairToText2 = checkActivePair2ndTime.getText();
         String[] seperateActivePairValues2 = convertActivePairToText2.split("\\n| "); //regex operation OR (|) was used to seperate line break and white space to create an array
 
@@ -94,10 +91,10 @@ public class ActivePairPrices {
         }
     }
 
-    public static void checkSymbolsValues(WebDriver driverChrome){
+    public static void checkSymbolsValues(WebDriverWait wait){
         //item 4
         //get elements
-        WebElement symbolsValues = driverChrome.findElement(getBy(SYMBOLS_BLOCK, ElementType.CSS_SELECTOR));
+        WebElement symbolsValues = getElementWithPolling(wait, getBy(SYMBOLS_BLOCK, ElementType.CSS_SELECTOR));
         String convertSymbolsValues = symbolsValues.getText();
 
         //split elements into an array
