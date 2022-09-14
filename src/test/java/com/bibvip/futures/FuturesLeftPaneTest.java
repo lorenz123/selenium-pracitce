@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static com.bibvip.configs.DriverConfig.getChromeConfig;
 import static com.bibvip.utility.ThinkingTimeUtil.getWebDriverWait;
 import static com.bibvip.variables.FuturesVars.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -86,6 +87,12 @@ public class FuturesLeftPaneTest {
         @Order(1)
         void testSymbolsValues() {
             ActivePairPrices.checkSymbolsValues(wait);
+
+            assertThat(ActivePairPrices.markPrice)
+                    .isNotEqualTo("--")
+                    .isNotEmpty()
+                    .isGreaterThan(ActivePairPrices.indexPrice);
+
 
             assertNotEquals("--", ActivePairPrices.markPrice);
             log.info("Mark Price value : "+ActivePairPrices.markPrice);
