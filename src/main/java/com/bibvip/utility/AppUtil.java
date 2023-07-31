@@ -1,6 +1,6 @@
 package com.bibvip.utility;
 
-import com.bibvip.consts.ElementType;
+import com.bibvip.configs.consts.ElementType;
 import org.openqa.selenium.By;
 
 public class AppUtil {

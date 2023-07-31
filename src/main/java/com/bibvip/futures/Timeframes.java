@@ -9,10 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.bibvip.configs.DriverConfig.driverChrome;
-import static com.bibvip.consts.ElementType.*;
+import static com.bibvip.configs.consts.ElementType.*;
 import static com.bibvip.utility.AppUtil.getBy;
-import static com.bibvip.utility.ThinkingTimeUtil.getElementWithPolling;
 import static com.bibvip.variables.FuturesVars.*;
 
 @Slf4j

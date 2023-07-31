@@ -16,7 +16,13 @@ public class ExecuteLogin {
     public static void performLogin() throws MalformedURLException {
         //start chrome driver
         WebDriver driverChrome = getChromeConfig();
+
+
+
+
         WebDriverWait wait = getWebDriverWait(driverChrome);
+
+
         //activate - login auto
         doLoginAuto(wait);
 

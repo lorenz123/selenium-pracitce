@@ -1,7 +1,7 @@
 package com.bibvip.futures;
 
 
-import com.bibvip.consts.ElementType;
+import com.bibvip.configs.consts.ElementType;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;

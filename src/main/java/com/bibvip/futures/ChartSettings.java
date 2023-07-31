@@ -1,14 +1,12 @@
 package com.bibvip.futures;
 
-import com.bibvip.configs.DriverConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.bibvip.configs.DriverConfig.driverChrome;
-import static com.bibvip.consts.ElementType.ID;
-import static com.bibvip.consts.ElementType.TAG_NAME;
+import static com.bibvip.configs.consts.ElementType.ID;
+import static com.bibvip.configs.consts.ElementType.TAG_NAME;
 import static com.bibvip.utility.AppUtil.getBy;
 import static com.bibvip.utility.ThinkingTimeUtil.getElementWithPolling;
 

@@ -1,13 +1,11 @@
 package com.bibvip.futures;
 
-import com.bibvip.consts.ElementType;
+import com.bibvip.configs.consts.ElementType;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.bibvip.utility.AppUtil.getBy;
-import static com.bibvip.utility.ThinkingTimeUtil.getElementWithPolling;
 import static com.bibvip.variables.FuturesVars.MARKET_BLOCK;
 import static com.bibvip.variables.FuturesVars.SHOW_PAIRS_DROPDOWN_BUTTON;
 
