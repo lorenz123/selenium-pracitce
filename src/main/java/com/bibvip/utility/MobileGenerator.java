@@ -1,4 +1,4 @@
-package com.bibvip.utility.mobile;
+package com.bibvip.utility;
 
 public class MobileGenerator {
 

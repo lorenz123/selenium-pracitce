@@ -1,4 +1,4 @@
-package com.bibvip.utility.password;
+package com.bibvip.utility;
 
 import java.util.Random;
 

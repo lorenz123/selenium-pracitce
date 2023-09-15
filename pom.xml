@@ -16,10 +16,10 @@
     </developers>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <selenium.java.driver.version>4.2.1</selenium.java.driver.version>
-        <selenium.web.driver.version>4.2.2</selenium.web.driver.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <selenium.java.driver.version>4.12.1</selenium.java.driver.version>
+        <selenium.web.driver.version>4.12.1</selenium.web.driver.version>
         <lombok.version>1.18.24</lombok.version>
     </properties>
 
@@ -203,7 +203,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.2.1</version>
+            <version>5.5.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
@@ -242,6 +242,14 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -19,7 +19,6 @@ public class ThinkingTimeUtil {
     public static WebElement getElementWithPolling(WebDriverWait wait, By webElementBy) {
         wait.pollingEvery(Duration.ofSeconds(POLLING_TIME));
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(webElementBy));
-//        WebElement elementJavascript = wait.until(ExpectedConditions.element(webElementBy));
         return element;
     }
 
