@@ -17,11 +17,7 @@ public class ExecuteLogin {
         //start chrome driver
         WebDriver driverChrome = getChromeConfig();
 
-
-
-
         WebDriverWait wait = getWebDriverWait(driverChrome);
-
 
         //activate - login auto
         doLoginAuto(wait);

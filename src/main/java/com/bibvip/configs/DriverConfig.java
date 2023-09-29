@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.net.MalformedURLException;
 
 import static com.bibvip.variables.BaseUrl.PROD_BASE_URL;
+import static com.bibvip.variables.BaseUrl.PROD_LOGIN_URL;
 
 @Slf4j
 public class DriverConfig {
@@ -16,7 +17,7 @@ public class DriverConfig {
     public static boolean windows = SystemUtils.IS_OS_WINDOWS;
     public static boolean mac = SystemUtils.IS_OS_MAC;
     public static boolean linux = SystemUtils.IS_OS_LINUX;
-    public static String environmentToTest = PROD_BASE_URL;
+    public static String environmentToTest = PROD_LOGIN_URL;
     public static WebDriver driverChrome = null;
 
     //TODO use factory method for driver
